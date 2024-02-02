@@ -2,6 +2,7 @@ library(tidyverse, warn.conflicts = FALSE)
 library(RColorBrewer)
 #install.packages("scales")                  # Install scales package
 library("scales")    
+library(ComplexHeatmap)
 
 # load an overview table of data & analysis paths -------------------------
 
@@ -22,6 +23,55 @@ abundance_data <- rbind(abundance_data,
                         )
 }
 
+# plot heatmap ------------------------------------------------------------
+
+## wrangle dataframe into matrix -------------------------------------------
+data.matrix <- abundance_data %>%
+  mutate(sample_name = paste(CHO_cell_variant_bio_replicate,tech_replicate, sep = "_")) %>%
+  select("sample_name", "modcom_name", "frac_ab") %>%
+  spread(key = sample_name, value = frac_ab) %>%
+  column_to_rownames("modcom_name") %>%
+  as.matrix()
+
+
+## calculate z-score & plot heatmap -------------------------------------
+
+scaled.data.matrix = t(scale(t(data.matrix))) # for scaling by row  
+
+#check for sanity
+mean(data.matrix[1,])
+sd(data.matrix[1,])
+(data.matrix[1] - mean(data.matrix[1,]))/sd(data.matrix[1,])
+(data.matrix[1,2] - mean(data.matrix[1,]))/sd(data.matrix[1,])
+
+
+#set the correct color scheme
+min(scaled.data.matrix)
+max(scaled.data.matrix)
+f1 = colorRamp2(seq(-4,4,length = 9),
+                c("seagreen4",
+                  "seagreen3",
+                  "seagreen2", 
+                  "seagreen1", 
+                  "gold",
+                  "darkorchid1", 
+                  "darkorchid2", 
+                  "darkorchid3",
+                  "darkorchid4"),
+                space = "RGB")
+#set the correct color scheme
+png(filename = "figures/Jan_2024/heatmap_scaled.png",    
+    height = 2400,
+    width = 2400,
+    units = "px",
+    res = 300)
+
+Heatmap(scaled.data.matrix,
+        col = f1,
+        cluster_rows = TRUE,
+        rect_gp = gpar(col = "white", lwd = 2))
+
+dev.off()
 
 # calculate mean and sd and plot ------------------------------------------
 abundance_data_averaged <- abundance_data %>% 
@@ -29,6 +79,10 @@ abundance_data_averaged <- abundance_data %>%
   summarise(frac_abundance = mean(frac_ab),
             error = sd(frac_ab)) 
 
+save(abundance_data, abundance_data_averaged, file = "analysis/Jan_2024/abundance_data.RData")
+
+
+# plot bar chart ----------------------------------------------------------
 
 abundance_data_averaged %>%
   ggplot(aes(modcom_name, frac_abundance)) +
