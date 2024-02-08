@@ -1,8 +1,8 @@
 library(tidyverse, warn.conflicts = FALSE)
 library(RColorBrewer)
-#install.packages("scales")                  # Install scales package
 library("scales")    
 library(ComplexHeatmap)
+library(circlize)
 
 # load an overview table of data & analysis paths -------------------------
 
@@ -78,9 +78,15 @@ abundance_data_averaged <- abundance_data %>%
   group_by(modcom_name, CHO_cell_variant_bio_replicate) %>%
   summarise(frac_abundance = mean(frac_ab),
             error = sd(frac_ab)) 
+  # %>%
+  # filter(CHO_cell_variant_bio_replicate == c("A16_1","A16_2","A19_1","A19_2"))
 
-save(abundance_data, abundance_data_averaged, file = "analysis/Jan_2024/abundance_data.RData")
+save(abundance_data, 
+     abundance_data_averaged, 
+     file = "analysis/Jan_2024/abundance_data.RData")
 
+# load("analysis/Jan_2024/abundance_data.RData")
+# load("analysis/Jan_2024/abundance_data_selected_glycans_intact.RData")
 
 # plot bar chart ----------------------------------------------------------
 
@@ -104,8 +110,9 @@ abundance_data_averaged %>%
   scale_y_continuous(breaks = c(0,10,20,30,35),
                      labels = number_format(accuracy = 1)) +
   xlab("") +
-  ylim(0, 40) +
+  ylim(0, 60) +
   ylab("fractional abundance (%)") +
+  labs(title = "Selected glycans - intact") +
   geom_hline(yintercept = 0, linewidth = .35) +
   coord_flip() +
   theme_bw() +
@@ -121,7 +128,7 @@ abundance_data_averaged %>%
 )
 
 
-ggsave(filename = "figures/Jan_2024/frac_ab_barplot.png",    
+ggsave(filename = "figures/Jan_2024/frac_ab_barplot_intact.png",    
        height = 160,
        width = 160,
        units = "mm",
