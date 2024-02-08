@@ -27,11 +27,11 @@ library(fragquaxi)
 # define to either run analysis of sample mab or pngase digested
 product <- "sample" #OR product <- "pngase" 
 
-directory <- fs::dir_create("data/Jan_2024")
+directory <- "data/Jan_2024"
 
 # define mab_sequence  --------------------------------
 
-mab_sequence <- ("mab_sequence/trastuzumab_noLysine.txt")
+mab_sequence <- "mab_sequence/trastuzumab_noLysine.txt"
 
 proteins <- define_proteins(
   mab = mab_sequence,
@@ -114,12 +114,8 @@ df <- separate_wider_delim(df,
         remove = FALSE) %>%
   mutate(tech_replicate = rep(c(1,2,3), 14)) #perhaps is redundant
 
-write.table(x = df,
-            file = "data/Jan_2024/overview_sample.csv",
-            sep = ",",
-            row.names = TRUE,
-            col.names = NA)
-
+write_csv(x = df,
+          file = "data/Jan_2024/overview_sample.csv")
 
 # import data with information on charge states and rt limits  --------
 
@@ -134,18 +130,14 @@ cs_rt_data <- read_csv('data/Jan_2024/rt_seconds_Jan2024_cs42_53.csv') %>%
         remove = FALSE)
 
 
-
 # merge data sample with data cs and rt -----------------------------------
 data_merged <- df %>% 
   left_join(cs_rt_data, by = "CHO_cell_variant_bio_replicate") %>%
   #cs_rt_data %>%  select(CHO_cell_variant_bio_replicate, )
   filter(CHO_cell_variant.x != "A25") # nearly no signal
 
-write.table(x = data_merged,
-            file = "data/Jan_2024/overview_sample_merged.csv",
-            sep = ",",
-            row.names = TRUE,
-            col.names = NA)
+write_csv(x = data_merged,
+          file = "data/Jan_2024/overview_sample_merged.csv")
 
 # fragquaxi analysis ------------------------------------------------------
 
@@ -192,41 +184,18 @@ calculate_abundance <- function(mzml_full_path,
     summarise(abundance = sum(abundance)) %>% 
     mutate(frac_ab = abundance / sum(abundance) * 100,
            file_name = mzml_full_path)
-  
-  write.table(x = abundances,
-              file = paste(analysis_path,"frac_ab_tb_cs50.csv",sep = "/"),
-              sep = "\t",
-              row.names = TRUE,
-              col.names = NA)
+
+    write_csv(x = abundances,
+              file = paste(analysis_path,"frac_ab_tb_cs50.csv",sep = "/")
+              )
   
   print('Analysis finished')
 }
 
 
-
-
 ## apply custom function to dfr --------------------------------------------
 
-pmap(data_merged, calculate_abundance)
-
-# plot ions of a specific charge state of a given ms file -----------------
-
-
-# plot abundances of a given ms file analysis -----------------------------
-# 
-# as_tibble(abundances[[1]]) %>% 
-#   mutate(
-#     modcom_name =
-#       factor(modcom_name) %>% 
-#       fct_inorder()
-#   ) %>% 
-#   unnest(abundance_data) %>% 
-#   group_by(modcom_name) %>%
-#   summarise(abundance = sum(abundance)) %>% 
-#   mutate(frac_ab = abundance / sum(abundance) * 100)
-
-
-
+pwalk(data_merged, calculate_abundance, .progress = TRUE)
 
 
 
