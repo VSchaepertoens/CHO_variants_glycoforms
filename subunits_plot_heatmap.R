@@ -64,9 +64,19 @@ ggplot(data_averaged, aes(y = cell_variant, x = mean_peak_area, fill = subunit))
   geom_bar(stat = "identity", position = "fill") +
   xlab("peak_area (%)") +
   scale_fill_brewer(palette = "Accent") +
-  scale_y_discrete(limits = rev)
+  scale_y_discrete(limits = rev) +
+  theme(text = element_text(size = 20, 
+                            face = "bold", 
+                            family = "sans"),
+        axis.text = element_text(colour = "black"),
+        # axis.ticks.y = element_blank(),
+        # legend.title = element_blank(),
+        # panel.border = element_blank(),
+        # panel.grid.major.y = element_blank(),
+        # panel.grid.minor = element_blank(),
+  )
 
-ggsave("figures/stacked_bar/stacked_bar_all.png", dpi = 600)
+ggsave("figures/stacked_bar/stacked_bar_all_bold_20_A2newdata.png", dpi = 600)
 
 #plot stacked barchart with labels
 ggplot(data_averaged, aes(x = cell_variant, y = mean_peak_area, fill = subunit)) + 
