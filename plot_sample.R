@@ -1,13 +1,11 @@
 library(tidyverse, warn.conflicts = FALSE)
 library(RColorBrewer)
-library("scales")    
 library(ComplexHeatmap)
 library(circlize)
 
 # load an overview table of data & analysis paths -------------------------
 
-samples_table <- read_delim("data/Jan_2024/overview_sample_merged.csv", delim = ",") 
- 
+samples_table <- read_csv("data/Jan_2024/overview_sample_merged.csv") 
 
 # load abundances using a for loop  ---------------------------------------
 
@@ -22,6 +20,7 @@ abundance_data <- rbind(abundance_data,
                                  )
                         )
 }
+#make function to load single file, use map 
 
 # plot heatmap ------------------------------------------------------------
 
@@ -29,10 +28,9 @@ abundance_data <- rbind(abundance_data,
 data.matrix <- abundance_data %>%
   mutate(sample_name = paste(CHO_cell_variant_bio_replicate,tech_replicate, sep = "_")) %>%
   select("sample_name", "modcom_name", "frac_ab") %>%
-  spread(key = sample_name, value = frac_ab) %>%
+  pivot_wider(names_from = sample_name, values_from = frac_ab) %>%
   column_to_rownames("modcom_name") %>%
   as.matrix()
-
 
 ## calculate z-score & plot heatmap -------------------------------------
 
@@ -46,20 +44,25 @@ sd(data.matrix[1,])
 
 
 #set the correct color scheme
-min(scaled.data.matrix)
-max(scaled.data.matrix)
-f1 = colorRamp2(seq(-4,4,length = 9),
-                c("seagreen4",
-                  "seagreen3",
-                  "seagreen2", 
-                  "seagreen1", 
-                  "gold",
-                  "darkorchid1", 
-                  "darkorchid2", 
-                  "darkorchid3",
-                  "darkorchid4"),
+# min(scaled.data.matrix)
+# max(scaled.data.matrix) 
+# f1 = colorRamp2(seq(-4,4,length = 9),
+#                 c("seagreen4",
+#                   "seagreen3",
+#                   "seagreen2", 
+#                   "seagreen1", 
+#                   "gold",
+#                   "darkorchid1", 
+#                   "darkorchid2", 
+#                   "darkorchid3",
+#                   "darkorchid4"),
+#                 space = "RGB")
+f1 = colorRamp2(seq(-max(abs(scaled.data.matrix)),
+                    max(abs(scaled.data.matrix)),
+                    length = 9),
+                brewer.pal(n = 9, name = "RdYlBu"),
                 space = "RGB")
-#set the correct color scheme
+
 png(filename = "figures/Jan_2024/heatmap_scaled.png",    
     height = 2400,
     width = 2400,
@@ -68,8 +71,7 @@ png(filename = "figures/Jan_2024/heatmap_scaled.png",
 
 Heatmap(scaled.data.matrix,
         col = f1,
-        cluster_rows = TRUE,
-        rect_gp = gpar(col = "white", lwd = 2))
+        rect_gp = gpar(col = "white", lwd = 2)) #height and width
 
 dev.off()
 
@@ -107,8 +109,6 @@ abundance_data_averaged %>%
     linewidth = .25
   ) +
   scale_fill_brewer(palette = "Paired") +
-  scale_y_continuous(breaks = c(0,10,20,30,35),
-                     labels = number_format(accuracy = 1)) +
   xlab("") +
   ylim(0, 60) +
   ylab("fractional abundance (%)") +
