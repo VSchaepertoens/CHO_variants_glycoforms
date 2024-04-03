@@ -5,7 +5,8 @@ library(circlize)
 
 # load an overview table of data & analysis paths -------------------------
 
-samples_table <- read_csv("data/Jan_2024/overview_sample_merged.csv") 
+# samples_table <- read_csv("data/Jan_2024/overview_sample_merged.csv") 
+samples_table <- read_csv("data/Dec_2023/overview_sample_pngase_merged.csv")
 
 # load abundances using a for loop  ---------------------------------------
 
@@ -46,26 +47,28 @@ sd(data.matrix[1,])
 #set the correct color scheme
 # min(scaled.data.matrix)
 # max(scaled.data.matrix) 
-# f1 = colorRamp2(seq(-4,4,length = 9),
-#                 c("seagreen4",
-#                   "seagreen3",
-#                   "seagreen2", 
-#                   "seagreen1", 
-#                   "gold",
-#                   "darkorchid1", 
-#                   "darkorchid2", 
-#                   "darkorchid3",
-#                   "darkorchid4"),
-#                 space = "RGB")
+f1 = colorRamp2(seq(-max(abs(scaled.data.matrix)),
+                    max(abs(scaled.data.matrix)),
+                    length = 9),
+                c("seagreen4",
+                  "seagreen3",
+                  "seagreen2",
+                  "seagreen1",
+                  "gold",
+                  "darkorchid1",
+                  "darkorchid2",
+                  "darkorchid3",
+                  "darkorchid4"),
+                space = "RGB")
 f1 = colorRamp2(seq(-max(abs(scaled.data.matrix)),
                     max(abs(scaled.data.matrix)),
                     length = 9),
                 brewer.pal(n = 9, name = "RdYlBu"),
                 space = "RGB")
 
-png(filename = "figures/Jan_2024/heatmap_scaled.png",    
-    height = 2400,
-    width = 2400,
+png(filename = "figures/Dec_2023/heatmap_scaled.png",    
+    height = 2000,
+    width = 3000,
     units = "px",
     res = 300)
 
@@ -79,13 +82,15 @@ dev.off()
 abundance_data_averaged <- abundance_data %>% 
   group_by(modcom_name, CHO_cell_variant_bio_replicate) %>%
   summarise(frac_abundance = mean(frac_ab),
-            error = sd(frac_ab)) 
+            error = sd(frac_ab)) %>%
+  mutate(modcom_name = factor(modcom_name, levels = c("none/2xHex","none/1xHex","Lys/Lys","none/Lys","none/none")),
+         )
   # %>%
   # filter(CHO_cell_variant_bio_replicate == c("A16_1","A16_2","A19_1","A19_2"))
 
 save(abundance_data, 
      abundance_data_averaged, 
-     file = "analysis/Jan_2024/abundance_data.RData")
+     file = "analysis/Dec_2023/abundance_data_lysine_glucose.RData")
 
 # load("analysis/Jan_2024/abundance_data.RData")
 # load("analysis/Jan_2024/abundance_data_selected_glycans_intact.RData")
@@ -110,15 +115,16 @@ abundance_data_averaged %>%
   ) +
   scale_fill_brewer(palette = "Paired") +
   xlab("") +
-  ylim(0, 60) +
+  # ylim(0, 60) +
   ylab("fractional abundance (%)") +
-  labs(title = "Selected glycans - intact") +
+  labs(title = "Lysine and glucose variants - intact") +
   geom_hline(yintercept = 0, linewidth = .35) +
   coord_flip() +
   theme_bw() +
   theme(text = element_text(size = 16, 
                             face = "bold", 
                             family = "sans"),
+        axis.text.y = element_text(colour = "black", hjust = 0.5),
         axis.text = element_text(colour = "black"),
         axis.ticks.y = element_blank(),
         legend.title = element_blank(),
@@ -128,7 +134,7 @@ abundance_data_averaged %>%
 )
 
 
-ggsave(filename = "figures/Jan_2024/frac_ab_barplot_intact.png",    
+ggsave(filename = "figures/Dec_2023/frac_ab_barplot_intact.png",    
        height = 160,
        width = 160,
        units = "mm",
