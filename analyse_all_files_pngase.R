@@ -27,7 +27,9 @@ library(fragquaxi)
 # define to either run analysis of sample mab or pngase digested
 product <- "pngase" #OR product <- "pngase" 
 
-directory <- "data/Dec_2023/pngase"
+# directory <- "data/Dec_2023/pngase"
+directory <- "data/Jan_2024/pngase"
+
 
 # define mab_sequence  --------------------------------
 
@@ -82,10 +84,10 @@ if (product == "sample") {
    modcoms <- tribble(
      ~modcom_name, ~Hex, ~HexNAc, ~Fuc, ~Neu5Ac, ~Lys,
      "none/none",     0,       0,    0,     0,  0,
-     "none/Lys",     0,       0,    0,     0,  1,
-     "Lys/Lys",     0,       0,    0,     0,  2,
-     "none/1xHex",     1,       0,    0,     0,  0,
-     "none/2xHex",     2,       0,    0,     0,  0,
+     # "none/Lys",     0,       0,    0,     0,  1,
+     # "Lys/Lys",     0,       0,    0,     0,  2,
+     "1xHex",     1,       0,    0,     0,  0,
+     "2xHex",     2,       0,    0,     0,  0,
    ) %>% 
      define_ptm_compositions(c(Lys = "C6H12N2O"))
 }
@@ -108,23 +110,28 @@ fs::dir_create(df$analysis_path)
 df <- separate_wider_delim(df,
                            filename,
                            delim = "_",
-                           names = c("ymd", "initials", "CHO_cell_variant", "bio_replicate","enzyme2","tech_replicate","aquisition_number"),
+                           # names = c("ymd", "initials", "CHO_cell_variant", "bio_replicate","enzyme2","tech_replicate","aquisition_number"),
+                           names = c("ymd", "initials", "CHO_cell_variant", "bio_replicate","cpb", "enzyme2","aquisition_number"),
                            # too_few = "debug"
                            ) %>%
   unite(CHO_cell_variant_bio_replicate, 
         c("CHO_cell_variant","bio_replicate"), 
         remove = FALSE) %>%
   # mutate(tech_replicate = rep(c(1,2,3), 14)) #perhaps is redundant
+  mutate(tech_replicate = rep(c(1,2,3), 12)) %>% #perhaps is redundant
   {.}
 
+# write_csv(x = df,
+#           file = "data/Dec_2023/overview_sample_pngase.csv")
 write_csv(x = df,
-          file = "data/Dec_2023/overview_sample_pngase.csv")
+          file = "data/Jan_2024/overview_sample_pngase.csv")
 
 # import data with information on charge states and rt limits  --------
 
-cs_rt_data <- read_csv('data/Dec_2023/rt_seconds_pngase.csv') %>%
+# cs_rt_data <- read_csv('data/Dec_2023/rt_seconds_pngase.csv') %>%
+cs_rt_data <- read_csv('data/Jan_2024/rt_seconds_Jan2024_pngase.csv') %>%
   separate(sample_name,
-           into = c("ymd", "initials", "CHO_cell_variant", "bio_replicate2","enzyme","tech_replicate2","aquisition_number"),
+           into = c("ymd", "initials", "CHO_cell_variant", "bio_replicate2","cpb2","enzyme","aquisition_number"),
            sep = "_",
            remove = FALSE) %>%
   filter(subunit == "intact")
@@ -139,10 +146,14 @@ data_merged <- df %>%
   select(mzml_full_path, CHO_cell_variant, analysis_path, tech_replicate, bio_replicate, CHO_cell_variant_bio_replicate) %>%
   left_join(cs_rt_data, by = "CHO_cell_variant") %>%
   #cs_rt_data %>%  select(CHO_cell_variant_bio_replicate, )
-  filter(CHO_cell_variant != "A25") # nearly no signal
+  # filter(CHO_cell_variant != "A25") # nearly no signal
+  {.}
+
+# write_csv(x = data_merged,
+#           file = "data/Dec_2023/overview_sample_pngase_merged.csv")
 
 write_csv(x = data_merged,
-          file = "data/Dec_2023/overview_sample_pngase_merged.csv")
+          file = "data/Jan_2024/overview_sample_pngase_merged.csv")
 
 # fragquaxi analysis ------------------------------------------------------
 
@@ -201,7 +212,6 @@ calculate_abundance <- function(mzml_full_path,
 ## apply custom function to dfr --------------------------------------------
 
 pwalk(data_merged, calculate_abundance, .progress = TRUE)
-
 
 
 
