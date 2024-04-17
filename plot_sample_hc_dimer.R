@@ -6,7 +6,7 @@ library(ComplexHeatmap)
 
 # load an overview table of data & analysis paths -------------------------
 
-samples_table <- read_delim("data/Jan_2024/overview_hc_dimer_merged.csv", delim = ",") 
+samples_table <- read_csv("data/Dec_2023/overview_hc_dimer_pngase_merged.csv") 
  
 
 # load abundances using a for loop  ---------------------------------------
@@ -48,19 +48,21 @@ sd(data.matrix[1,])
 #set the correct color scheme
 min(scaled.data.matrix)
 max(scaled.data.matrix)
-f1 = colorRamp2(seq(-2,2,length = 9),
+f1 = colorRamp2(seq(-max(abs(scaled.data.matrix)),
+                    max(abs(scaled.data.matrix)),
+                    length = 9),
                 c("seagreen4",
                   "seagreen3",
-                  "seagreen2", 
-                  "seagreen1", 
+                  "seagreen2",
+                  "seagreen1",
                   "gold",
-                  "darkorchid1", 
-                  "darkorchid2", 
+                  "darkorchid1",
+                  "darkorchid2",
                   "darkorchid3",
                   "darkorchid4"),
                 space = "RGB")
 #set the correct color scheme
-png(filename = "figures/Jan_2024/heatmap_scaled_hc_dimer.png",    
+png(filename = "figures/Dec_2023/heatmap_scaled_hc_dimer.png",    
     height = 2400,
     width = 2400,
     units = "px",
@@ -77,11 +79,13 @@ dev.off()
 abundance_data_averaged <- abundance_data %>% 
   group_by(modcom_name, CHO_cell_variant_bio_replicate) %>%
   summarise(frac_abundance = mean(frac_ab),
-            error = sd(frac_ab)) 
+            error = sd(frac_ab)) %>%   
+  mutate(modcom_name = factor(modcom_name, levels = c("2xHex","1xHex","Lys/Lys","none/Lys","none/none")),
+            ) 
 
 save(abundance_data, 
      abundance_data_averaged, 
-     file = "analysis/Jan_2024/abundance_data_hc_dimer.RData")
+     file = "analysis/Dec_2023/abundance_data_hc_dimer.RData")
 
 
 # plot bar chart ----------------------------------------------------------
@@ -106,9 +110,9 @@ abundance_data_averaged %>%
   scale_y_continuous(breaks = c(0,10,20,30,35),
                      labels = number_format(accuracy = 1)) +
   xlab("") +
-  ylim(0, 60) +
+  ylim(0, 100) +
   ylab("fractional abundance (%)") +
-  labs(title = "Selected glycans - intact") +
+  labs(title = "Lysine and glucose variants - hc_dimer") +
   geom_hline(yintercept = 0, linewidth = .35) +
   coord_flip() +
   theme_bw() +
@@ -124,7 +128,7 @@ abundance_data_averaged %>%
 )
 
 
-ggsave(filename = "figures/Jan_2024/frac_ab_barplot_hc_dimer.png",    
+ggsave(filename = "figures/Dec_2023/frac_ab_barplot_hc_dimer.png",    
        height = 160,
        width = 160,
        units = "mm",
