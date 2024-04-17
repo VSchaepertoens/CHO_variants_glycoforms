@@ -5,8 +5,10 @@ library(circlize)
 
 # load an overview table of data & analysis paths -------------------------
 
-# samples_table <- read_csv("data/Jan_2024/overview_sample_merged.csv") 
-samples_table <- read_csv("data/Dec_2023/overview_sample_pngase_merged.csv")
+# samples_table <- read_csv("data/Jan_2024/overview_sample_merged.csv")
+# samples_table <- read_csv("data/Dec_2023/overview_sample_pngase_merged.csv")
+samples_table <- read_csv("data/Jan_2024/overview_sample_pngase_merged.csv")
+
 
 # load abundances using a for loop  ---------------------------------------
 
@@ -83,14 +85,15 @@ abundance_data_averaged <- abundance_data %>%
   group_by(modcom_name, CHO_cell_variant_bio_replicate) %>%
   summarise(frac_abundance = mean(frac_ab),
             error = sd(frac_ab)) %>%
-  mutate(modcom_name = factor(modcom_name, levels = c("none/2xHex","none/1xHex","Lys/Lys","none/Lys","none/none")),
-         )
-  # %>%
+  # mutate(modcom_name = factor(modcom_name, levels = c("2xHex","1xHex","Lys/Lys","none/Lys","none/none")),
+  mutate(modcom_name = factor(modcom_name, levels = c("2xHex","1xHex","none/none"))) %>%
   # filter(CHO_cell_variant_bio_replicate == c("A16_1","A16_2","A19_1","A19_2"))
-
-save(abundance_data, 
-     abundance_data_averaged, 
-     file = "analysis/Dec_2023/abundance_data_lysine_glucose.RData")
+{.}
+  
+save(abundance_data,
+     abundance_data_averaged,
+     file = "analysis/Jan_2024/abundance_data_cpb_pngase.RData")
+# abundance_data_average_Orig <- abundance_data_averaged
 
 # load("analysis/Jan_2024/abundance_data.RData")
 # load("analysis/Jan_2024/abundance_data_selected_glycans_intact.RData")
@@ -115,9 +118,9 @@ abundance_data_averaged %>%
   ) +
   scale_fill_brewer(palette = "Paired") +
   xlab("") +
-  # ylim(0, 60) +
+  ylim(0, 100) +
   ylab("fractional abundance (%)") +
-  labs(title = "Lysine and glucose variants - intact") +
+  labs(title = "Glucose variants - intact") +
   geom_hline(yintercept = 0, linewidth = .35) +
   coord_flip() +
   theme_bw() +
@@ -134,7 +137,7 @@ abundance_data_averaged %>%
 )
 
 
-ggsave(filename = "figures/Dec_2023/frac_ab_barplot_intact.png",    
+ggsave(filename = "figures/Jan_2024/frac_ab_barplot_intact_glucose.png",    
        height = 160,
        width = 160,
        units = "mm",
