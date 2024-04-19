@@ -1,4 +1,7 @@
-
+library(tidyverse)
+library("scales")    
+library(ComplexHeatmap)
+library(circlize)
 
 # load cafog corrected data -----------------------------------------------
 # load abundances using a for loop  ---------------------------------------
@@ -71,3 +74,79 @@ ggsave(filename = "figures/Jan_2024/frac_ab_barplot_cafog_corrected_reordered.pn
        width = 160,
        units = "mm",
        dpi = 600)
+
+
+# plot data as a heatmap --------------------------------------------------
+
+data.matrix <- data_to_plot %>%
+  select(glycoform1, corr_abundance, CHO_cell_variant_bio_replicate) %>%
+  pivot_wider(names_from = CHO_cell_variant_bio_replicate, values_from = corr_abundance) %>%
+  column_to_rownames("glycoform1") %>%
+  arrange(c(7,8, 9, 10, 11, 12, 4, 3, 6, 5, 1, 2)) %>%
+  as.matrix()
+  
+## calculate z-score & plot heatmap -------------------------------------
+
+scaled.data.matrix = t(scale(t(data.matrix))) # for scaling by row  
+
+#check for sanity
+mean(data.matrix[1,])
+sd(data.matrix[1,])
+(data.matrix[1] - mean(data.matrix[1,]))/sd(data.matrix[1,])
+(data.matrix[1,2] - mean(data.matrix[1,]))/sd(data.matrix[1,])
+
+
+BASE_TEXT_SIZE_PT <- 5
+ht_opt(
+  simple_anno_size = unit(1.5, "mm"),
+  COLUMN_ANNO_PADDING = unit(1, "pt"),
+  DENDROGRAM_PADDING = unit(1, "pt"),
+  HEATMAP_LEGEND_PADDING = unit(1, "mm"),
+  ROW_ANNO_PADDING = unit(1, "pt"),
+  TITLE_PADDING = unit(2, "mm"),
+  heatmap_row_title_gp = gpar(fontsize = BASE_TEXT_SIZE_PT),
+  heatmap_row_names_gp = gpar(fontsize = BASE_TEXT_SIZE_PT),
+  heatmap_column_title_gp = gpar(fontsize = BASE_TEXT_SIZE_PT),
+  heatmap_column_names_gp = gpar(fontsize = BASE_TEXT_SIZE_PT),
+  legend_labels_gp = gpar(fontsize = BASE_TEXT_SIZE_PT),
+  legend_title_gp = gpar(fontsize = BASE_TEXT_SIZE_PT),
+  legend_border = FALSE
+)
+
+#set the correct color scheme
+min(scaled.data.matrix)
+max(scaled.data.matrix)
+f1 = colorRamp2(seq(-max(abs(scaled.data.matrix)),
+                    max(abs(scaled.data.matrix)),
+                    length = 9),
+                c("seagreen4",
+                  "seagreen3",
+                  "seagreen2",
+                  "seagreen1",
+                  "gold",
+                  "darkorchid1",
+                  "darkorchid2",
+                  "darkorchid3",
+                  "darkorchid4"),
+                space = "RGB")
+#set the correct color scheme
+png(filename = "figures/Jan_2024/heatmap_scaled_cafog_corrected_reordered.png",    
+    height = 5,
+    width = 5,
+    units = "cm",
+    res = 600)
+
+
+Heatmap(scaled.data.matrix,
+        col = f1,
+        cluster_rows = FALSE,
+        rect_gp = gpar(col = "white", lwd = 2),
+        name = "z-score",
+        row_gap = unit(2, "pt"),
+        column_gap = unit(2, "pt"),
+        width = unit(2, "mm") * ncol(scaled.data.matrix) + 5 * unit(2, "pt"), # to make each cell a square
+        height = unit(2, "mm") * nrow(scaled.data.matrix) + 5 * unit(2, "pt"), # to make each cell a square
+        show_row_names = TRUE
+)
+
+dev.off()
