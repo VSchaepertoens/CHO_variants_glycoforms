@@ -11,3 +11,5 @@ analyse_single_file.R
 analyse_all_files_codeRev.R
 analyse_single_file_pngase.R
 wrangle_byonic_results.R
+glycans_lysine_quantification.pdf
+glycans_lysine_quantification.docx
