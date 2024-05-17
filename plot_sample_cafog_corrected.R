@@ -2,6 +2,7 @@ library(tidyverse)
 library("scales")    
 library(ComplexHeatmap)
 library(circlize)
+library(RColorBrewer)
 
 # load cafog corrected data -----------------------------------------------
 # load abundances using a for loop  ---------------------------------------
@@ -29,14 +30,18 @@ data_to_plot <- abundance_data %>%
   ) %>%
   select(glycoform1, corr_abundance, corr_abundance_error, CHO_cell_variant_bio_replicate) %>%
   mutate(glycoform1 = str_replace_all(glycoform1, c("G0F/G2F" = "G1F/G1F", "G2F/none" = "none/G2F", "G1F/none" = "none/G1F", "G0F/none" = "none/G0F", "G0/none" = "none/G0"))) %>%
-  mutate(glycoform1 = factor(glycoform1, levels = c("G1F/S1G1F","G2F/G2F","G1F/G2F","G1F/G1F","G0F/G1F","G0F/G0F","G0F/G0", "none/G2F", "none/G1F", "none/G0F", "none/G0","none/none")))
+  mutate(glycoform1 = factor(glycoform1, levels = c("G1F/S1G1F","G2F/G2F","G1F/G2F","G1F/G1F","G0F/G1F","G0F/G0F","G0F/G0", "none/G2F", "none/G1F", "none/G0F", "none/G0","none/none"))) %>%
+  mutate(CHO_cell_variant_bio_replicate = factor(CHO_cell_variant_bio_replicate, levels = c("A19_2","A19_1", "A16_2","A16_1","A8_2", "A8_1","A4_2", "A4_1","A3_2", "A3_1","A2_2", "A2_1")))
+{.}
 
+
+# Define the colors from the "Paired" palette
+paired_colors <- brewer.pal(n = 12, name = "Paired")
 
 data_to_plot %>%
-  ggplot(aes(glycoform1, corr_abundance)) +
+  ggplot(aes(x = glycoform1, y = corr_abundance, fill = CHO_cell_variant_bio_replicate)) +
   geom_col(
-    aes(y = corr_abundance, fill = CHO_cell_variant_bio_replicate),
-    position = position_dodge(.9),
+    position = position_dodge(width = 0.9)  # Adjust the dodge width for bars within groups
   ) +
   geom_errorbar(
     aes(
@@ -48,31 +53,39 @@ data_to_plot %>%
     width = .5,
     linewidth = .25
   ) +
-  scale_fill_brewer(palette = "Paired") +
+  scale_fill_manual(
+    values = paired_colors,
+    breaks = c("A2_1","A2_2", "A3_1","A3_2","A4_1", "A4_2","A8_1", "A8_2","A16_1", "A16_2","A19_1", "A19_2")
+  ) +
   xlab("") +
-  ylim(0, 60) +
+  ylim(0, 40) +
   ylab("fractional abundance (%)") +
-  labs(title = "Hexose bias corrected glycoforms - intact") +
   geom_hline(yintercept = 0, linewidth = .35) +
   coord_flip() +
+  # facet_wrap(~CHO_cell_variant_bio_replicate, scales = "free_y", ncol = 12) +  # Use facet_wrap to create space between groups
   theme_bw() +
-  theme(text = element_text(size = 16, 
-                            face = "bold", 
+  guides(fill = guide_legend(ncol = 3)) + 
+  theme(text = element_text(size = 9, 
+                            # face = "bold", 
                             family = "sans"),
         axis.text.y = element_text(colour = "black", hjust = 0.5),
         axis.text = element_text(colour = "black"),
         axis.ticks.y = element_blank(),
         legend.title = element_blank(),
+        legend.text = element_text(size = 9),
+        legend.key.height = unit(0.3, 'cm'),
+        legend.key.width = unit(0.3, 'cm'),
+        legend.position = "bottom",
         panel.border = element_blank(),
         panel.grid.major.y = element_blank(),
         panel.grid.minor = element_blank(),
-  )
+  ) 
 
 
-ggsave(filename = "figures/Jan_2024/frac_ab_barplot_cafog_corrected_reordered.png",    
-       height = 160,
-       width = 160,
-       units = "mm",
+ggsave(filename = "figures/Jan_2024/frac_ab_barplot_cafog_corrected_reordered_SC_legend_reordered.png",    
+       height = 12,
+       width = 8.89,
+       units = "cm",
        dpi = 600)
 
 
@@ -96,7 +109,7 @@ sd(data.matrix[1,])
 (data.matrix[1,2] - mean(data.matrix[1,]))/sd(data.matrix[1,])
 
 
-BASE_TEXT_SIZE_PT <- 5
+BASE_TEXT_SIZE_PT <- 9
 ht_opt(
   simple_anno_size = unit(1.5, "mm"),
   COLUMN_ANNO_PADDING = unit(1, "pt"),
@@ -130,23 +143,25 @@ f1 = colorRamp2(seq(-max(abs(scaled.data.matrix)),
                   "darkorchid4"),
                 space = "RGB")
 #set the correct color scheme
-png(filename = "figures/Jan_2024/heatmap_scaled_cafog_corrected_reordered.png",    
-    height = 5,
-    width = 5,
+png(filename = "figures/Jan_2024/heatmap_scaled_cafog_corrected_reordered_SC.png",    
+    height = 9,
+    width = 8.89,
     units = "cm",
     res = 600)
 
 
-Heatmap(scaled.data.matrix,
+draw(Heatmap(scaled.data.matrix,
         col = f1,
         cluster_rows = FALSE,
         rect_gp = gpar(col = "white", lwd = 2),
-        name = "z-score",
-        row_gap = unit(2, "pt"),
-        column_gap = unit(2, "pt"),
-        width = unit(2, "mm") * ncol(scaled.data.matrix) + 5 * unit(2, "pt"), # to make each cell a square
-        height = unit(2, "mm") * nrow(scaled.data.matrix) + 5 * unit(2, "pt"), # to make each cell a square
-        show_row_names = TRUE
-)
+        name = "z-score of fractional abundance",
+        row_gap = unit(4, "pt"),
+        column_gap = unit(4, "pt"),
+        width = unit(4, "mm") * ncol(scaled.data.matrix) + 5 * unit(4, "pt"), # to make each cell a square
+        height = unit(4, "mm") * nrow(scaled.data.matrix) + 5 * unit(4, "pt"), # to make each cell a square
+        show_row_names = TRUE,
+        heatmap_legend_param = list(direction = "horizontal")
+        ),
+     heatmap_legend_side = "bottom")
 
 dev.off()
