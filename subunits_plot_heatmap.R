@@ -55,7 +55,19 @@ data_averaged <- data %>%
   group_by(cell_variant) %>%
   mutate(percent = (mean_peak_area/sum(mean_peak_area))) %>%
   mutate(subunit = str_replace_all(subunit, c('LC/LC' = 'LC-LC'))) %>%
-  mutate(cell_variant = factor(cell_variant, levels = c("A25_1", "A25_2", "A2_1", "A2_2", "A3_1", "A3_2", "A4_1", "A4_2", "A8_1", "A8_2", "A16_1", "A16_2", "A19_1", "A19_2")))
+  mutate(cell_variant = factor(cell_variant, levels = c("A25_1", "A25_2", 
+                                                        "A2_1", "A2_2", 
+                                                        "A3_1", "A3_2", 
+                                                        "A4_1", "A4_2", 
+                                                        "A8_1", "A8_2", 
+                                                        "A16_1", "A16_2", 
+                                                        "A19_1", "A19_2"))) %>%
+  filter(cell_variant %in% c( "A2_1", "A2_2", 
+                              "A3_1", "A3_2", 
+                              "A4_1", "A4_2", 
+                              "A8_1", "A8_2", 
+                              "A16_1", "A16_2", 
+                              "A19_1", "A19_2"))
 
 # mutate(glycoform1 = str_replace_all(glycoform1, c("G0F/G2F" = "G1F/G1F", "G2F/none" = "none/G2F", "G1F/none" = "none/G1F", "G0F/none" = "none/G0F", "G0/none" = "none/G0"))) %>%
   
@@ -85,7 +97,7 @@ ggplot(data_averaged, aes(y = cell_variant, x = mean_peak_area, fill = subunit))
         panel.grid.minor = element_blank(),
   )
 
-ggsave("figures/stacked_bar/figure_8_reordered.png",        
+ggsave("figures/stacked_bar/figure_8_ver3.png",        
        width = 8.89,
        height = 8.89,
        units = c("cm"),
