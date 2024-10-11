@@ -21,8 +21,7 @@ This repository contains scripts for the following analysis:
 
     -   Script: [plot_subunits.R](plot_subunits.R) - Loads csv table with the subunits quantification and plots stacked barplot.
 
-    -   Output: Saves stacked barplot figure_8.png in the folder `figures`
-    ![Relative quantification of subunits](figures/stacked_bar/figure_8.png)
+    -   Output: Saves stacked barplot figure_8.png in the folder `figures` ![Relative quantification of subunits](figures/figure_8.png)
 
 2.  Quantification and hexose bias correction of N-glycans attached to the Fc region of the mAb 2.1 Quantification of uncorrected N-glycans abundance 2.2 Quantification of hexose bias 2.3 Correction of hexose bias and final quantification of corrected N-glycans abudance
 
