@@ -19,7 +19,7 @@ This repository contains scripts for the following analysis:
 
     -   Input: data/RelQuantIntact01.csv
 
-    -   Script: [subunits_plot_heatmap.R](subunits_plot_heatmap.R) - Loads csv table with the subunits quantification and plots stacked barchart.
+    -   Script: [plot_subunits.R](plot_subunits.R) - Loads csv table with the subunits quantification and plots stacked barplot.
 
     -   Output: Saves stacked barplot Figure 8. in the folder `figures`
 
