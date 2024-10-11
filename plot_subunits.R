@@ -10,33 +10,6 @@ data <- read_csv('data/RelQuantIntact01.csv') %>%
   column_to_rownames(var = "...1")
 
 
-# heatmap -----------------------------------------------------------------
-## plot heatmap of raw data ------------------------------------------------
-
-data.matrix <- as.matrix(data)
-
-Heatmap(data.matrix)
-Heatmap(data.matrix, col = plasma(100))
-Heatmap(data.matrix, col = rev(rainbow(10)))
-
-## calculate z-score & plot heatmap -------------------------------------------------------
-
-scaled.data.matrix = t(scale(t(data.matrix))) # for scaling by row  
-
-#check for sanity
-mean(data.matrix[1,])
-sd(data.matrix[1,])
-(data.matrix[1] - mean(data.matrix[1,]))/sd(data.matrix[1,])
-(data.matrix[1,2] - mean(data.matrix[1,]))/sd(data.matrix[1,])
-
-min(scaled.data.matrix)
-max(scaled.data.matrix)
-col_fun = colorRamp2(c(-1.3, 0, 1.6), c("green", "white", "red"))
-Heatmap(scaled.data.matrix, col = col_fun)
-Heatmap(scaled.data.matrix, col = plasma(100))
-Heatmap(scaled.data.matrix, col = rev(rainbow(10)))
-
-
 # build correct table -----------------------------------------------------
 
 data <- data %>%
@@ -69,8 +42,6 @@ data_averaged <- data %>%
                               "A16_1", "A16_2", 
                               "A19_1", "A19_2"))
 
-# mutate(glycoform1 = str_replace_all(glycoform1, c("G0F/G2F" = "G1F/G1F", "G2F/none" = "none/G2F", "G1F/none" = "none/G1F", "G0F/none" = "none/G0F", "G0/none" = "none/G0"))) %>%
-  
 
 #convert 'subunit' to factor and specify level order ## important for plotting order
 data_averaged$subunit <- factor(data_averaged$subunit, levels = c('Intact', 'LC-LC', 'LC'))
@@ -97,7 +68,7 @@ ggplot(data_averaged, aes(y = cell_variant, x = mean_peak_area, fill = subunit))
         panel.grid.minor = element_blank(),
   )
 
-ggsave("figures/stacked_bar/figure_8_ver3.png",        
+ggsave("figures/figure_8.png",        
        width = 8.89,
        height = 8.89,
        units = c("cm"),
@@ -125,30 +96,8 @@ ggplot(data_averaged, aes(x = cell_variant, y = mean_peak_area, fill = subunit))
     axis.text.x = element_blank()
     ) 
  
-ggsave("figures/stacked_bar/stacked_bar_percent_all_SC.png", 
-       width = 8.89,
-       height = 6.5,
-       units = c("cm"),
-       dpi = 600)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# ggsave("figures/stacked_bar/stacked_bar_percent_all_SC.png", 
+#        width = 8.89,
+#        height = 6.5,
+#        units = c("cm"),
+#        dpi = 600)
