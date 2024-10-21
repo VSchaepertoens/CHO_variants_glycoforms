@@ -25,8 +25,8 @@ Please use R version 4.3.0. This repository contains scripts for the following a
 
 2.  Quantification and hexose bias correction of N-glycans attached to the Fc region of the mAb
 
-    2.1 Quantification of hexose-bias uncorrected N-glycans abundance 
-    
+    2.1 Quantification of hexose-bias uncorrected N-glycans abundance
+
     Download intact_input_data.zip from the Zenodo repository and unzip the raw and mzml files into the `data` directory. Also download the csv table which contains information on retention times, the MS scan numbers and the charge states (rt_seconds_Jan2024_cs42_53_intact.csv) into the `data` directory.
 
     -   Input: all mzml files in the directory `data`, data/rt_seconds_Jan2024_cs42_53_intact.csv
@@ -36,8 +36,8 @@ Please use R version 4.3.0. This repository contains scripts for the following a
     -   Output: Each mzml file will have the quantified table saved into a folder with the file name, e.g. analysis/20240125_TB_A2_1_CpB_11/frac_ab_tb_cs50.csv
 
     2.2 Quantification of hexose bias
-    
-     Download pngase_cpb_input_data.zip from the Zenodo repository and unzip the raw and mzml files into the `data` directory. Also download the csv table which contains information on retention times, the MS scan numbers and the charge states (rt_seconds_Jan2024_pngase.csv) into the `data` directory.
+
+    Download pngase_cpb_input_data.zip from the Zenodo repository and unzip the raw and mzml files into the `data` directory. Also download the csv table which contains information on retention times, the MS scan numbers and the charge states (rt_seconds_Jan2024_pngase.csv) into the `data` directory.
 
     -   Input: all mzml files in the directory `data`, data/rt_seconds_Jan2024_pngase.csv
 
@@ -46,5 +46,17 @@ Please use R version 4.3.0. This repository contains scripts for the following a
     -   Output: Each mzml file will have the quantified table saved into a folder with the file name, e.g. analysis/20240125_TB_A16_1_CpB_PNGase_111/frac_ab_tb_cs50.csv
 
     2.3 Correction of hexose bias and final quantification of corrected N-glycans abudance
+
+    -   Input: uncorrected N-glycan abundance data abundance_data.RData and hexose bias data abundance_data_cpb_pngase.RData located in the folder `analysis`, these files are produced by the previous sections 2.1 and 2.2, respectively
+
+    -   Scripts:
+
+    [prepare_cafog_data.R](prepare_cafog_data.R) - Assembles all data required for the CAFOG analysis
+
+    [subprocess_cafog.ipynb](subprocess_cafog.ipynb) - Uses [cafog](https://github.com/cdl-biosimilars/cafog) to correct N-glycans for hexosylation bias
+
+    [plot_sample_cafog_corrected.R](plot_sample_cafog_corrected.R) - Plots the corrected N-glycan abundances either as a barplot Figure 9. or as a heatmap Figure 10.
+
+    -   Output: Corrected N-glycan abundances saved as results.csv in the respective analysis/cafog folder and saved Figures 9. and 10. in the folder `figures`
 
 3.  Quantification of lysine variants and glycation on the intact mAb
