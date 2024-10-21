@@ -119,7 +119,7 @@ write_csv(x = df,
 
 # import data with information on charge states and rt limits  --------
 
-cs_rt_data <- read_csv('data/Jan_2024/rt_seconds_Jan2024_cs42_53.csv') %>%
+cs_rt_data <- read_csv('data/Jan_2024/rt_seconds_Jan2024_cs42_53_intact.csv') %>%
   separate(sample_name,
            into = c("ymd", "initials", "CHO_cell_variant", "bio_replicate","enzyme","aquisition_number"),
            sep = "_",
