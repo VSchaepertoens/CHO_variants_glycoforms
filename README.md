@@ -13,7 +13,7 @@ This repository complements the publication by Marx et al (2024) (DOI link)
 
 ## Analysis description
 
-This repository contains scripts for the following analysis:
+Please use R version 4.3.0. This repository contains scripts for the following analysis:
 
 1.  Quantification of the mAb subunits from the peak areas of UV-chromatograms
 
@@ -21,8 +21,30 @@ This repository contains scripts for the following analysis:
 
     -   Script: [plot_subunits.R](plot_subunits.R) - Loads csv table with the subunits quantification and plots stacked barplot.
 
-    -   Output: Saves stacked barplot figure_8.png in the folder `figures` ![Relative quantification of subunits](figures/figure_8.png)
+    -   Output: Saves stacked barplot figure_8.png in the folder `figures`
 
-2.  Quantification and hexose bias correction of N-glycans attached to the Fc region of the mAb 2.1 Quantification of uncorrected N-glycans abundance 2.2 Quantification of hexose bias 2.3 Correction of hexose bias and final quantification of corrected N-glycans abudance
+2.  Quantification and hexose bias correction of N-glycans attached to the Fc region of the mAb
+
+    2.1 Quantification of hexose-bias uncorrected N-glycans abundance 
+    
+    Download intact_input_data.zip from the Zenodo repository and unzip the raw and mzml files into the `data` directory. Also download the csv table which contains information on retention times, the MS scan numbers and the charge states (rt_seconds_Jan2024_cs42_53_intact.csv) into the `data` directory.
+
+    -   Input: all mzml files in the directory `data`, data/rt_seconds_Jan2024_cs42_53_intact.csv
+
+    -   Script : [analyse_all_files.R](analyse_all_files.R) - Using the package [fragquaxi](https://github.com/cdl-biosimilars/fragquaxi), quantify N-glycans in the input mzml files
+
+    -   Output: Each mzml file will have the quantified table saved into a folder with the file name, e.g. analysis/20240125_TB_A2_1_CpB_11/frac_ab_tb_cs50.csv
+
+    2.2 Quantification of hexose bias
+    
+     Download pngase_cpb_input_data.zip from the Zenodo repository and unzip the raw and mzml files into the `data` directory. Also download the csv table which contains information on retention times, the MS scan numbers and the charge states (rt_seconds_Jan2024_pngase.csv) into the `data` directory.
+
+    -   Input: all mzml files in the directory `data`, data/rt_seconds_Jan2024_pngase.csv
+
+    -   Script : [analyse_all_files_pngase.R](analyse_all_files_pngase.R) - Using the package [fragquaxi](https://github.com/cdl-biosimilars/fragquaxi), quantify hexoses in the input mzml files
+
+    -   Output: Each mzml file will have the quantified table saved into a folder with the file name, e.g. analysis/20240125_TB_A16_1_CpB_PNGase_111/frac_ab_tb_cs50.csv
+
+    2.3 Correction of hexose bias and final quantification of corrected N-glycans abudance
 
 3.  Quantification of lysine variants and glycation on the intact mAb
