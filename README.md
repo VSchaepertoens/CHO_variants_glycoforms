@@ -35,13 +35,11 @@ Download the folders containing raw data, intermediary files, and all figures fr
 
     2.2 Quantification of hexose bias
 
-    Download pngase_cpb_input_data.zip from the Zenodo repository and unzip the raw and mzml files into the `data` directory. Also download the csv table which contains information on retention times, the MS scan numbers and the charge states (rt_seconds_Jan2024_pngase.csv) into the `data` directory.
-
-    -   Input: all mzml files in the directory `data`, data/rt_seconds_Jan2024_pngase.csv
+    -   Input: all mzml files in the directory `data/2_nglycans_quantification/2_2_pngaseF_cpb/pngase_cpb_input_data`, data/2_nglycans_quantification/2_2_pngaseF_cpb/rt_seconds_Jan2024_pngase.csv
 
     -   Script : [analyse_all_files_pngase.R](analyse_all_files_pngase.R) - Using the package [fragquaxi](https://github.com/cdl-biosimilars/fragquaxi), quantify hexoses in the input mzml files
 
-    -   Output: Each mzml file will have the quantified table saved into a folder with the file name, e.g. analysis/20240125_TB_A16_1_CpB_PNGase_111/frac_ab_tb_cs50.csv
+    -   Output: Each mzml file will have the quantified table saved into a folder with the file name, e.g. analysis/2_nglycans_quantification/pngase_cpb_output_tables/20240125_TB_A16_1_CpB_PNGase_111/frac_ab_tb_cs50.csv
 
     2.3 Correction of hexose bias and final quantification of corrected N-glycans abudance
 
