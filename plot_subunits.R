@@ -6,7 +6,7 @@ library(viridis)
 
 # load_data ---------------------------------------------------------------
 
-data <- read_csv('data/RelQuantIntact01.csv') %>%
+data <- read_csv('data/1_subunit_quantification/RelQuantIntact01.csv') %>%
   column_to_rownames(var = "...1")
 
 
@@ -68,7 +68,7 @@ ggplot(data_averaged, aes(y = cell_variant, x = mean_peak_area, fill = subunit))
         panel.grid.minor = element_blank(),
   )
 
-ggsave("figures/figure_8.png",        
+ggsave("figures/1_subunit_quantification/figure_8.png",        
        width = 8.89,
        height = 8.89,
        units = c("cm"),
