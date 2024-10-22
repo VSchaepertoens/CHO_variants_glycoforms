@@ -27,7 +27,7 @@ library(fragquaxi)
 # define to either run analysis of sample mab or pngase digested
 product <- "sample" #OR product <- "pngase" 
 
-directory <- "data/Jan_2024"
+directory <- "data/2_nglycans_quantification/2_1_not_corrected_glycans/intact_input_data"
 
 # define mab_sequence  --------------------------------
 
@@ -93,11 +93,13 @@ if (product == "sample") {
 
 df <- tibble(mzml_full_path = dir_ls(path = directory,regexp = pattern),) %>%
   separate(mzml_full_path,
-           into = c("data", "exp_month","filename"),
+           into = c("data", "subdir1", "subdir2", "subdir3","filename"),
            sep = "/",
            remove = FALSE) %>%
   mutate(analysis_path = fs::path("analysis",
-                                  exp_month,
+                                  subdir1, 
+                                  subdir2, 
+                                  "intact_output_tables",
                                   gsub("\\..*$", "", filename))) 
   
 fs::dir_create(df$analysis_path)
@@ -115,11 +117,11 @@ df <- separate_wider_delim(df,
   mutate(tech_replicate = rep(c(1,2,3), 14)) #perhaps is redundant
 
 write_csv(x = df,
-          file = "data/Jan_2024/overview_sample.csv")
+          file = "data/2_nglycans_quantification/2_1_not_corrected_glycans/overview_sample.csv")
 
 # import data with information on charge states and rt limits  --------
 
-cs_rt_data <- read_csv('data/Jan_2024/rt_seconds_Jan2024_cs42_53_intact.csv') %>%
+cs_rt_data <- read_csv('data/2_nglycans_quantification/2_1_not_corrected_glycans/rt_seconds_Jan2024_cs42_53_intact.csv') %>%
   separate(sample_name,
            into = c("ymd", "initials", "CHO_cell_variant", "bio_replicate","enzyme","aquisition_number"),
            sep = "_",
@@ -137,7 +139,7 @@ data_merged <- df %>%
   filter(CHO_cell_variant.x != "A25") # nearly no signal
 
 write_csv(x = data_merged,
-          file = "data/Jan_2024/overview_sample_merged.csv")
+          file = "data/2_nglycans_quantification/2_1_not_corrected_glycans/overview_sample_merged.csv")
 
 # fragquaxi analysis ------------------------------------------------------
 
