@@ -17,41 +17,35 @@ Download the folders containing raw data, intermediary files, and all figures fr
 
 1 Quantification of the mAb subunits from the peak areas of UV-chromatograms
 
-        
 -   Input: data/1_subunit_quantification/RelQuantIntact01.csv
 
 -   Script: [plot_subunits.R](plot_subunits.R) - Loads csv table with the subunits quantification and plots stacked barplot.
 
 -   Output: Saves stacked barplot figure_8.png in the folder `figures/1_subunit_quantification`
 
-
 2 Quantification and hexose bias correction of N-glycans attached to the Fc region of the mAb
 
-        
 Overall, the analysis workflow in this section is illustrated in the following figure. ![Schema of the analysis workflow](workflow_scheme.png)
-
 
 2_1 Quantification of hexose-bias not corrected N-glycans abundance
 
--   Scripts : 
 [analyse_all_files.R](analyse_all_files.R) - Using the package [fragquaxi](https://github.com/cdl-biosimilars/fragquaxi), quantify the abundance of N-glycans in the input mzml files. 
--   Input: all mzml files in the directory `data/2_nglycans_quantification/2_1_not_corrected_glycans/intact_input_data` and `data/2_nglycans_quantification/2_1_not_corrected_glycans/rt_seconds_Jan2024_cs42_53_intact.csv`
--   Output: Each mzml file will have the quantified table saved into a folder with the file name, e.g. analysis/2_nglycans_quantification/2_1_not_corrected_glycans/intact_output_tables/20240125_TB_A2_1_CpB_11/frac_ab_tb_cs50.csv
+- Input: all mzml files in the directory `data/2_nglycans_quantification/2_1_not_corrected_glycans/intact_input_data` and `data/2_nglycans_quantification/2_1_not_corrected_glycans/rt_seconds_Jan2024_cs42_53_intact.csv` 
+- Output: Each mzml file will have the quantified table saved into a folder with the file name, e.g. analysis/2_nglycans_quantification/2_1_not_corrected_glycans/intact_output_tables/20240125_TB_A2_1_CpB_11/frac_ab_tb_cs50.csv
 
-[plot_sample.R](plot_sample.R) - Plot the not corrected N-glycans as a fractional abundance bar plot.
--   Input: Abundance quantification tables from analysis/2_1_not_corrected_glycans/intact_output_tables/
--   Output: Figure 2_1_not_corrected_glycans.png in figures/2_nglycans_quantification/2_1_not_corrected_glycans/,  merged dataset in analysis/2_nglycans_quantification/2_1_not_corrected_glycans/intact_output_tables/abundance_data.RData
+[plot_sample.R](plot_sample.R) - Plot the not corrected N-glycans as a fractional abundance bar plot. 
+- Input: Abundance quantification tables from analysis/2_1_not_corrected_glycans/intact_output_tables/ 
+- Output: Figure 2_1_not_corrected_glycans.png in figures/2_nglycans_quantification/2_1_not_corrected_glycans/, merged dataset in analysis/2_nglycans_quantification/2_1_not_corrected_glycans/intact_output_tables/abundance_data.RData
 
 2_2 Quantification of glycation (hexosylation)
--   Scripts : 
 
 [analyse_all_files_pngase.R](analyse_all_files_pngase.R) - Using the package [fragquaxi](https://github.com/cdl-biosimilars/fragquaxi), quantify abundance of hexoses (glucose molecules) in the input mzml files. 
--   Input: all mzml files in the directory `data/2_nglycans_quantification/2_2_pngaseF_cpb/pngase_cpb_input_data`, data/2_nglycans_quantification/2_2_pngaseF_cpb/rt_seconds_Jan2024_pngase.csv
--   Output: Each mzml file will have the quantified table saved into a folder with the file name, e.g. analysis/2_nglycans_quantification/pngase_cpb_output_tables/20240125_TB_A16_1_CpB_PNGase_111/frac_ab_tb_cs50.csv
+- Input: all mzml files in the directory `data/2_nglycans_quantification/2_2_pngaseF_cpb/pngase_cpb_input_data`, data/2_nglycans_quantification/2_2_pngaseF_cpb/rt_seconds_Jan2024_pngase.csv 
+- Output: Each mzml file will have the quantified table saved into a folder with the file name, e.g. analysis/2_nglycans_quantification/pngase_cpb_output_tables/20240125_TB_A16_1_CpB_PNGase_111/frac_ab_tb_cs50.csv
 
 [plot_sample_pngase.R](plot_sample_pngase.R) - Plot the abundance of hexoses. 
--   Input: Abundance quantification tables from analysis/2_nglycans_quantification/pngase_cpb_output_tables/
--   Output: Two figures hexosylation_heatmap.png and supplementary_figure_3.png in figures/2_nglycans_quantification/2_2_pngaseF_cpb/,  merged dataset in analysis/2_nglycans_quantification/pngase_cpb_output_tables/abundance_data_cpb_pngase.RData
+- Input: Abundance quantification tables from analysis/2_nglycans_quantification/pngase_cpb_output_tables/ 
+- Output: Two figures hexosylation_heatmap.png and supplementary_figure_3.png in figures/2_nglycans_quantification/2_2_pngaseF_cpb/, merged dataset in analysis/2_nglycans_quantification/pngase_cpb_output_tables/abundance_data_cpb_pngase.RData
 
 2_3 Correction of hexose (glycation) bias and final quantification of corrected N-glycans abudance
 
