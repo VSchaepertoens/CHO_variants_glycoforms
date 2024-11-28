@@ -15,28 +15,31 @@ This repository complements the publication by Marx et al (2024) (DOI link)
 
 Download the folders containing raw data, intermediary files, and all figures from the following Zenodo link:[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.13880132.svg)](https://doi.org/10.5281/zenodo.13880132). This repository contains scripts for the following analysis:
 
-1.  Quantification of the mAb subunits from the peak areas of UV-chromatograms
+1 Quantification of the mAb subunits from the peak areas of UV-chromatograms
 
-    -   Input: data/1_subunit_quantification/RelQuantIntact01.csv
+```         
+-   Input: data/1_subunit_quantification/RelQuantIntact01.csv
 
-    -   Script: [plot_subunits.R](plot_subunits.R) - Loads csv table with the subunits quantification and plots stacked barplot.
+-   Script: [plot_subunits.R](plot_subunits.R) - Loads csv table with the subunits quantification and plots stacked barplot.
 
-    -   Output: Saves stacked barplot figure_8.png in the folder `figures/1_subunit_quantification`
+-   Output: Saves stacked barplot figure_8.png in the folder `figures/1_subunit_quantification`
+```
 
-2.  Quantification and hexose bias correction of N-glycans attached to the Fc region of the mAb
+2 Quantification and hexose bias correction of N-glycans attached to the Fc region of the mAb
 
-    Overall, the analysis workflow in this section is illustrated in the following figure. ![Schema of the analysis workflow](workflow_scheme.png)
+```         
+Overall, the analysis workflow in this section is illustrated in the following figure. ![Schema of the analysis workflow](workflow_scheme.png)
+```
 
-        
-2.1 Quantification of hexose-bias uncorrected N-glycans abundance
+2_1 Quantification of hexose-bias not corrected N-glycans abundance
 
--   Input: all mzml files in the directory `data/2_nglycans_quantification/2_1_not_corrected_glycans/intact_input_data`, data/2_nglycans_quantification/2_1_not_corrected_glycans/rt_seconds_Jan2024_cs42_53_intact.csv
+-   Input: all mzml files in the directory `data/2_nglycans_quantification/2_1_not_corrected_glycans/intact_input_data` and `data/2_nglycans_quantification/2_1_not_corrected_glycans/rt_seconds_Jan2024_cs42_53_intact.csv`
 
--   Script : [analyse_all_files.R](analyse_all_files.R) - Using the package [fragquaxi](https://github.com/cdl-biosimilars/fragquaxi), quantify N-glycans in the input mzml files
+-   Script : [analyse_all_files.R](analyse_all_files.R) - Using the package [fragquaxi](https://github.com/cdl-biosimilars/fragquaxi), quantify the abundance of N-glycans in the input mzml files. [plot_sample.R](plot_sample.R) - Plot the not corrected N-glycans as a fractional abundance bar plot.
 
 -   Output: Each mzml file will have the quantified table saved into a folder with the file name, e.g. analysis/2_nglycans_quantification/2_1_not_corrected_glycans/intact_output_tables/20240125_TB_A2_1_CpB_11/frac_ab_tb_cs50.csv
 
-2.2 Quantification of glycation (hexosylation)
+2_2 Quantification of glycation (hexosylation)
 
 -   Input: all mzml files in the directory `data/2_nglycans_quantification/2_2_pngaseF_cpb/pngase_cpb_input_data`, data/2_nglycans_quantification/2_2_pngaseF_cpb/rt_seconds_Jan2024_pngase.csv
 
@@ -44,7 +47,7 @@ Download the folders containing raw data, intermediary files, and all figures fr
 
 -   Output: Each mzml file will have the quantified table saved into a folder with the file name, e.g. analysis/2_nglycans_quantification/pngase_cpb_output_tables/20240125_TB_A16_1_CpB_PNGase_111/frac_ab_tb_cs50.csv
 
-2.3 Correction of hexose (glycation) bias and final quantification of corrected N-glycans abudance
+2_3 Correction of hexose (glycation) bias and final quantification of corrected N-glycans abudance
 
 -   Input: uncorrected N-glycan abundance data abundance_data.RData and glycation data abundance_data_cpb_pngase.RData located in the folder `analysis`, these files are produced by the previous sections 2.1 and 2.2, respectively
 
@@ -58,19 +61,14 @@ Download the folders containing raw data, intermediary files, and all figures fr
 
 -   Output: Corrected N-glycan abundances saved as results.csv in the respective analysis/cafog folder and saved Figures 9. and 10. in the folder `figures`
 
-
-3.  Quantification of lysine variants and glycation on the intact mAb
+3 Quantification of lysine variants and glycation on the intact mAb
 
 Download pngase_input_data.zip from the Zenodo repository and unzip the raw and mzml files into the `data` directory. Also download the csv table which contains information on retention times, the MS scan numbers and the charge states (rt_seconds_pngase.csv) into the `data` directory.
 
-       
--   Input: all mzml files in the directory `data/3_lysine_glycation_quantification/pngase_input_data, `data/3_lysine_glycation_quantification/rt_seconds_pngase.csv`
+-   Input: all mzml files in the directory `data/3_lysine_glycation_quantification/pngase_input_data,`data/3_lysine_glycation_quantification/rt_seconds_pngase.csv\`
 
--   Script : 
-
+-   Script :
 
 [analyse_all_files_pngase_lysine.R](analyse_all_files_pngase_lysine.R) - Using the package [fragquaxi](https://github.com/cdl-biosimilars/fragquaxi), quantify lysine and glycation in the input mzml files #plotting section needs work [plot_sample_cafog_corrected.R](plot_sample_cafog_corrected.R) - Plots the lysine and glycation fractional abundances as a barplot Figure 11.
 
-         
 -   Output: Each mzml file will have the quantified table saved into a folder with the file name, e.g. analysis/3_lysine_glycation_quantification/20231123_TB_A16_1_pngase_1_151/frac_ab_tb_cs50.csv
-
