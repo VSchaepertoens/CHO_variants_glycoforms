@@ -17,10 +17,8 @@ Download the folders containing raw data, intermediary files, and all figures fr
 
 1 Quantification of the mAb subunits from the peak areas of UV-chromatograms
 
+[plot_subunits.R](plot_subunits.R) - Loads csv table with the subunits quantification and plots stacked barplot.
 -   Input: data/1_subunit_quantification/RelQuantIntact01.csv
-
--   Script: [plot_subunits.R](plot_subunits.R) - Loads csv table with the subunits quantification and plots stacked barplot.
-
 -   Output: Saves stacked barplot figure_8.png in the folder `figures/1_subunit_quantification`
 
 2 Quantification and hexose bias correction of N-glycans attached to the Fc region of the mAb
@@ -49,17 +47,17 @@ Overall, the analysis workflow in this section is illustrated in the following f
 
 2_3 Correction of hexose (glycation) bias and final quantification of corrected N-glycans abudance
 
--   Input: uncorrected N-glycan abundance data abundance_data.RData and glycation data abundance_data_cpb_pngase.RData located in the folder `analysis`, these files are produced by the previous sections 2.1 and 2.2, respectively
-
--   Scripts:
-
 [prepare_data_cafog.R](prepare_data_cafog.R) - Assembles all data required for the CAFOG analysis
+-   Input: Results of 2_1 and 2_2 - uncorrected N-glycan abundance data abundance_data.RData and glycation data abundance_data_cpb_pngase.RData located in the folders `analysis/2_nglycans_quantification/2_1_not_corrected_glycans/intact_output_tables/abundance_data.RData`, `analysis/2_nglycans_quantification/pngase_cpb_output_tables/abundance_data_cpb_pngase.RData`.
+- Output: For each sample, a single folder with tables for glycation.csv, glycosylation.csv and glycan_library.csv will be produced in the folder `analysis/2_nglycans_quantification/2_3_cafog_corrected_glycans`
 
 [subprocess_cafog.ipynb](subprocess_cafog.ipynb) - Uses the hexose bias correction algorithm [cafog](https://github.com/cdl-biosimilars/cafog) to correct N-glycans for hexosylation bias
+-   Input:
+-   Output: Corrected N-glycan abundances saved as results.csv in the respective analysis/cafog folder and 
 
 [plot_sample_cafog_corrected.R](plot_sample_cafog_corrected.R) - Plots the corrected N-glycan abundances either as a barplot Figure 9. or as a heatmap Figure 10.
-
--   Output: Corrected N-glycan abundances saved as results.csv in the respective analysis/cafog folder and saved Figures 9. and 10. in the folder `figures`
+-   Input:
+-   Output: saved Figures 9. and 10. in the folder `figures`
 
 3 Quantification of lysine variants and glycation on the intact mAb
 
