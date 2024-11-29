@@ -63,10 +63,10 @@ Overall, the analysis workflow in this section is illustrated in the following f
 
 **3. Quantification of lysine variants and glycation on the intact mAb**
 
-[analyse_all_files_pngase_lysine.R](analyse_all_files_pngase_lysine.R) - Using the package [fragquaxi](https://github.com/cdl-biosimilars/fragquaxi), quantify lysine and glycation in the input mzml files #plotting section needs work
--   Input: all mzml files in the directory `data/3_lysine_glycation_quantification/pngase_input_data,`data/3_lysine_glycation_quantification/rt_seconds_pngase.csv\`
-- Output: Each mzml file will have the quantified table saved into a folder with the file name, e.g. analysis/3_lysine_glycation_quantification/pngase_output_tables/20231123_TB_A2_1_pngase_1_111/frac_ab_tb_cs50.csv
+[analyse_all_files_pngase_lysine.R](analyse_all_files_pngase_lysine.R) - Using the package [fragquaxi](https://github.com/cdl-biosimilars/fragquaxi), quantify lysine and glycation in the input mzml files 
+-   Input: all mzml files in the directory `data/3_lysine_glycation_quantification/pngase_input_data`,`data/3_lysine_glycation_quantification/rt_seconds_pngase.csv`
+- Output: Each mzml file will have the quantified table saved into a folder with the file name, e.g. `analysis/3_lysine_glycation_quantification/pngase_output_tables/20231123_TB_A2_1_pngase_1_111/frac_ab_tb_cs50.csv`
 
  [plot_sample_lysine_glucose.R](plot_sample_lysine_glucose.R) - Plots the lysine and glycation fractional abundances as a barplot Figure 11.
-  - Input: Abundance quantification tables from `analysis/3_lysine_glycation_quantification/pngase_output_tables/` 
+- Input: Abundance quantification tables from `analysis/3_lysine_glycation_quantification/pngase_output_tables/` 
 - Output: Two figures figure_11.png and lysine_hexosylation_heatmap.png in `figures/3_lysine_glycation_quantification/`, merged dataset in `analysis/3_lysine_glycation_quantification/pngase_output_tables/abundance_data_lysine_glucose.RData`
