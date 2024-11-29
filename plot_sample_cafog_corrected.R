@@ -11,7 +11,7 @@ abundance_data <- NULL
 coefs <- c("A16_1", "A16_2", "A2_1", "A2_2", "A3_1", "A3_2", "A4_1", "A4_2", "A8_1", "A8_2", "A19_1", "A19_2")
 
 for (coef in coefs) {
-  file_path <- paste0("analysis/cafog/",coef,"/results.csv")
+  file_path <- paste0("analysis/2_nglycans_quantification/2_3_cafog_corrected_glycans/",coef,"/results.csv")
   
   abundance_data <- rbind(abundance_data,
                           read_csv(file_path,
@@ -34,6 +34,9 @@ data_to_plot <- abundance_data %>%
   mutate(CHO_cell_variant_bio_replicate = factor(CHO_cell_variant_bio_replicate, levels = c("A19_2","A19_1", "A16_2","A16_1","A8_2", "A8_1","A4_2", "A4_1","A3_2", "A3_1","A2_2", "A2_1")))
 {.}
 
+save(data_to_plot,
+     data.matrix,
+     file = "analysis/2_nglycans_quantification/2_3_cafog_corrected_glycans/corrected_abundance_data.RData")
 
 # Define the colors from the "Paired" palette
 paired_colors <- brewer.pal(n = 12, name = "Paired")
@@ -82,7 +85,7 @@ data_to_plot %>%
   ) 
 
 
-ggsave(filename = "figures/Jan_2024/frac_ab_barplot_cafog_corrected_reordered_SC_legend_reordered.png",    
+ggsave(filename = "figures/2_nglycans_quantification/2_3_cafog_corrected_glycans/figure_9.png",    
        height = 12,
        width = 8.89,
        units = "cm",
@@ -143,7 +146,7 @@ f1 = colorRamp2(seq(-max(abs(scaled.data.matrix)),
                   "darkorchid4"),
                 space = "RGB")
 #set the correct color scheme
-png(filename = "figures/Jan_2024/heatmap_scaled_cafog_corrected_reordered_SC.png",    
+png(filename = "figures/2_nglycans_quantification/2_3_cafog_corrected_glycans/figure_10.png",    
     height = 9,
     width = 8.89,
     units = "cm",

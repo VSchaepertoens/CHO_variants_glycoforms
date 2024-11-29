@@ -6,14 +6,13 @@ library(fs)
 
 # load abundance data -----------------------------------------------------
 
-load("analysis/Jan_2024/abundance_data.RData")
-
+load("analysis/2_nglycans_quantification/2_1_not_corrected_glycans/intact_output_tables/abundance_data.RData")
 glycosylation <-  abundance_data_averaged
 
 # load glycation data -----------------------------------------------------
 
 
-load("analysis/Jan_2024/abundance_data_cpb_pngase.RData")
+load("analysis/2_nglycans_quantification/2_2_pngaseF_cpb/pngase_cpb_output_tables/abundance_data_cpb_pngase.RData")
 
 glycation <-  abundance_data_averaged
 
@@ -30,7 +29,7 @@ composition_mapping <- list(
 # for each coef make files for cafog analysis --------------------------------------
 coefs <-  unique(glycosylation$CHO_cell_variant_bio_replicate)
 
-fs::dir_create(paste0("analysis/cafog/",coefs))
+fs::dir_create(paste0("analysis/2_nglycans_quantification/2_3_cafog_corrected_glycans/",coefs))
 
 #for loop to create cafog files for each CHO_cell_variant_bio_repliacte
 for (coef in coefs) {
@@ -40,7 +39,7 @@ for (coef in coefs) {
     select(modcom_name, frac_abundance, error) %>%
     rename(`#glycoform` = modcom_name,
            abundance = frac_abundance) %>%
-    write_csv(paste0("analysis/cafog/",coef,"/glycosylation.csv"),
+    write_csv(paste0("analysis/2_nglycans_quantification/2_3_cafog_corrected_glycans/",coef,"/glycosylation.csv"),
               col_names = TRUE)
 
   glycation %>%
@@ -50,7 +49,7 @@ for (coef in coefs) {
            abundance = frac_abundance) %>%
     mutate(`#count` = as.character(`#count`)) %>%
     mutate(`#count` = str_replace_all(`#count`, c("1xHex" = "1", "2xHex" = "2", "none/none" = "0"))) %>%
-    write_csv(paste0("analysis/cafog/",coef,"/glycation.csv"),
+    write_csv(paste0("analysis/2_nglycans_quantification/2_3_cafog_corrected_glycans/",coef,"/glycation.csv"),
               col_names = TRUE)
 
   glycosylation %>%
@@ -67,7 +66,7 @@ for (coef in coefs) {
         glycoforms == "S1G1F" ~ composition_mapping[["S1G1F"]],
         TRUE ~ NA_character_  # Handle unmatched cases
       )) %>%
-    write_csv(paste0("analysis/cafog/",coef,"/glycan_library.csv"),
+    write_csv(paste0("analysis/2_nglycans_quantification/2_3_cafog_corrected_glycans/",coef,"/glycan_library.csv"),
                         col_names = TRUE)
 } 
 
