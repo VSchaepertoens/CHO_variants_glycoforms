@@ -63,12 +63,10 @@ Overall, the analysis workflow in this section is illustrated in the following f
 
 3. Quantification of lysine variants and glycation on the intact mAb
 
-Download pngase_input_data.zip from the Zenodo repository and unzip the raw and mzml files into the `data` directory. Also download the csv table which contains information on retention times, the MS scan numbers and the charge states (rt_seconds_pngase.csv) into the `data` directory.
-
+[analyse_all_files_pngase_lysine.R](analyse_all_files_pngase_lysine.R) - Using the package [fragquaxi](https://github.com/cdl-biosimilars/fragquaxi), quantify lysine and glycation in the input mzml files #plotting section needs work
 -   Input: all mzml files in the directory `data/3_lysine_glycation_quantification/pngase_input_data,`data/3_lysine_glycation_quantification/rt_seconds_pngase.csv\`
+- Output: 
 
--   Script :
-
-[analyse_all_files_pngase_lysine.R](analyse_all_files_pngase_lysine.R) - Using the package [fragquaxi](https://github.com/cdl-biosimilars/fragquaxi), quantify lysine and glycation in the input mzml files #plotting section needs work [plot_sample_cafog_corrected.R](plot_sample_cafog_corrected.R) - Plots the lysine and glycation fractional abundances as a barplot Figure 11.
-
+ [plot_sample_cafog_corrected.R](plot_sample_cafog_corrected.R) - Plots the lysine and glycation fractional abundances as a barplot Figure 11.
+-   Input:
 -   Output: Each mzml file will have the quantified table saved into a folder with the file name, e.g. analysis/3_lysine_glycation_quantification/20231123_TB_A16_1_pngase_1_151/frac_ab_tb_cs50.csv

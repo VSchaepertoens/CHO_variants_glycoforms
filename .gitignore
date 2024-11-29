@@ -7,9 +7,17 @@
 /data
 /presentation
 /from_Kathi
+/library_citations
 analyse_single_file.R
 analyse_all_files_codeRev.R
 analyse_single_file_pngase.R
 wrangle_byonic_results.R
 glycans_lysine_quantification.pdf
 glycans_lysine_quantification.docx
+/zenodo
+analyse_all_files_hc_dimer.R
+analyse_all_files_hc_dimer_pngase.R
+plot_sample_hc_dimer.R
+analyse_all_files_selected_glycans.R
+plot_sample_selected_glycans.R
+/arch
