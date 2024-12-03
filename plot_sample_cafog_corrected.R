@@ -91,6 +91,12 @@ ggsave(filename = "figures/2_nglycans_quantification/2_3_cafog_corrected_glycans
        units = "cm",
        dpi = 600)
 
+ggsave(filename = "figures/2_nglycans_quantification/2_3_cafog_corrected_glycans/figure_9.svg",    
+       height = 12,
+       width = 8.89,
+       units = "cm",
+       dpi = 600)
+
 
 # plot data as a heatmap --------------------------------------------------
 
@@ -151,6 +157,13 @@ png(filename = "figures/2_nglycans_quantification/2_3_cafog_corrected_glycans/fi
     width = 8.89,
     units = "cm",
     res = 600)
+
+svg(filename = "figures/2_nglycans_quantification/2_3_cafog_corrected_glycans/figure_10.svg",    
+    height = 9,
+    width = 8.89
+    # units = "cm",
+    # res = 600
+    )
 
 
 draw(Heatmap(scaled.data.matrix,
