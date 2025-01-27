@@ -1,6 +1,6 @@
 # Characterisation of large transgene integrations in Chinese hamster ovary cells using a bioengineered mammalian transposase
 
-This repository complements the publication by Marx et al (2024) (DOI link)
+This repository complements the publication by Marx et al (2024) (https://doi.org/10.1002/btpr.3524)
 
 ## Folders
 
