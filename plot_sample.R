@@ -6,7 +6,7 @@ library(RColorBrewer)
 
 # load an overview table of data & analysis paths -------------------------
 
-samples_table <- read_csv("data/2_nglycans_quantification/2_1_not_corrected_glycans/overview_sample.csv")  %>%
+samples_table <- read_csv("data/2_nglycans_quantification/2_1_not_corrected_glycans/overview_sample_merged.csv")  %>%
   filter(CHO_cell_variant != "A25")
 # samples_table <- read_csv("data/Dec_2023/overview_sample_pngase_merged.csv")
 # samples_table <- read_csv("data/Jan_2024/overview_sample_pngase_merged.csv")
