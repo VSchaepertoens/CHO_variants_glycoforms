@@ -13,7 +13,8 @@ This repository complements the publication by Marx et al (2024) (https://doi.or
 
 ## Analysis description
 
-Download the folders containing raw data, intermediary files, and all figures from the following Zenodo link:[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.13880132.svg)](https://doi.org/10.5281/zenodo.13880132). This repository contains scripts for the following analysis:
+Download the folders containing raw data, intermediary files, and all figures from the following Zenodo link:[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.13880132.svg)](https://doi.org/10.5281/zenodo.13880132).Open Herceptin_November_2023.Rproj and run renv::restore() to install all necessary libraries. 
+This repository contains scripts for the following analysis:
 
 **1. Quantification of the mAb subunits from the peak areas of UV-chromatograms**
 
