@@ -74,11 +74,11 @@ ggsave("figures/1_subunit_quantification/figure_8.png",
        units = c("cm"),
        dpi = 600)
 
-ggsave("figures/1_subunit_quantification/figure_8.svg",        
-       width = 8.89,
-       height = 8.89,
-       units = c("cm"),
-       dpi = 600)
+# ggsave("figures/1_subunit_quantification/figure_8.svg",        
+#        width = 8.89,
+#        height = 8.89,
+#        units = c("cm"),
+#        dpi = 600)
 
 #plot stacked barchart with labels
 ggplot(data_averaged, aes(x = cell_variant, y = mean_peak_area, fill = subunit)) + 

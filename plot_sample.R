@@ -6,8 +6,7 @@ library(RColorBrewer)
 
 # load an overview table of data & analysis paths -------------------------
 
-samples_table <- read_csv("data/2_nglycans_quantification/2_1_not_corrected_glycans/overview_sample_merged.csv")  %>%
-  filter(CHO_cell_variant != "A25")
+samples_table <- read_csv("data/2_nglycans_quantification/2_1_not_corrected_glycans/overview_sample_merged.csv")
 # samples_table <- read_csv("data/Dec_2023/overview_sample_pngase_merged.csv")
 # samples_table <- read_csv("data/Jan_2024/overview_sample_pngase_merged.csv")
 
@@ -70,24 +69,24 @@ f1 = colorRamp2(seq(-max(abs(scaled.data.matrix)),
                 brewer.pal(n = 9, name = "RdYlBu"),
                 space = "RGB")
 
-png(filename = "figures/Dec_2023/heatmap_scaled.png",    
-    height = 2000,
-    width = 3000,
-    units = "px",
-    res = 300)
+# png(filename = "figures/Dec_2023/heatmap_scaled.png",    
+#     height = 2000,
+#     width = 3000,
+#     units = "px",
+#     res = 300)
 
 Heatmap(scaled.data.matrix,
         col = f1,
         rect_gp = gpar(col = "white", lwd = 2)) #height and width
 
-dev.off()
+# dev.off()
 
 # calculate mean and sd and plot ------------------------------------------
 abundance_data_averaged <- abundance_data %>% 
   group_by(modcom_name, CHO_cell_variant_bio_replicate) %>%
   summarise(frac_abundance = mean(frac_ab),
             error = sd(frac_ab)) %>%
-  mutate(modcom_name = factor(modcom_name, levels = c("G1F/S1G1F","G2F/G2F","G1F/G2F","G1F/G1F","G0F/G1F","G0F/G0F","G0F/G0", "none/G2F", "none/G1F", "none/G0F", "none/G0","none/none")))
+  mutate(modcom_name = factor(modcom_name, levels = c("G1F/S1G1F","G2F/G2F","G1F/G2F","G1F/G1F","G0F/G1F","G0F/G0F","G0F/G0", "none/G2F", "none/G1F", "none/G0F", "none/G0","none/none"))) %>%
   # mutate(modcom_name = str_replace_all(modcom_name, c("Lys/Lys" = "2xLys", "none/Lys" = "1xLys"))) %>%
   # mutate(modcom_name = factor(modcom_name, levels = c("2xHex","1xHex","2xLys","1xLys","none/none"))) %>%
   mutate(CHO_cell_variant_bio_replicate = factor(CHO_cell_variant_bio_replicate, levels = c("A19_2","A19_1", "A16_2","A16_1","A8_2", "A8_1","A4_2", "A4_1","A3_2", "A3_1","A2_2", "A2_1"))) %>%

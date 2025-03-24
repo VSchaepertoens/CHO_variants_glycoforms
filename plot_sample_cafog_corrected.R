@@ -32,7 +32,6 @@ data_to_plot <- abundance_data %>%
   mutate(glycoform1 = str_replace_all(glycoform1, c("G0F/G2F" = "G1F/G1F", "G2F/none" = "none/G2F", "G1F/none" = "none/G1F", "G0F/none" = "none/G0F", "G0/none" = "none/G0"))) %>%
   mutate(glycoform1 = factor(glycoform1, levels = c("G1F/S1G1F","G2F/G2F","G1F/G2F","G1F/G1F","G0F/G1F","G0F/G0F","G0F/G0", "none/G2F", "none/G1F", "none/G0F", "none/G0","none/none"))) %>%
   mutate(CHO_cell_variant_bio_replicate = factor(CHO_cell_variant_bio_replicate, levels = c("A19_2","A19_1", "A16_2","A16_1","A8_2", "A8_1","A4_2", "A4_1","A3_2", "A3_1","A2_2", "A2_1")))
-{.}
 
 save(data_to_plot,
      data.matrix,
@@ -91,11 +90,11 @@ ggsave(filename = "figures/2_nglycans_quantification/2_3_cafog_corrected_glycans
        units = "cm",
        dpi = 600)
 
-ggsave(filename = "figures/2_nglycans_quantification/2_3_cafog_corrected_glycans/figure_9.svg",    
-       height = 12,
-       width = 8.89,
-       units = "cm",
-       dpi = 600)
+# ggsave(filename = "figures/2_nglycans_quantification/2_3_cafog_corrected_glycans/figure_9.svg",    
+#        height = 12,
+#        width = 8.89,
+#        units = "cm",
+#        dpi = 600)
 
 
 # plot data as a heatmap --------------------------------------------------
@@ -158,12 +157,12 @@ png(filename = "figures/2_nglycans_quantification/2_3_cafog_corrected_glycans/fi
     units = "cm",
     res = 600)
 
-svg(filename = "figures/2_nglycans_quantification/2_3_cafog_corrected_glycans/figure_10.svg",    
-    height = 9,
-    width = 8.89
-    # units = "cm",
-    # res = 600
-    )
+# svg(filename = "figures/2_nglycans_quantification/2_3_cafog_corrected_glycans/figure_10.svg",    
+#     height = 9,
+#     width = 8.89
+#     # units = "cm",
+#     # res = 600
+#     )
 
 
 draw(Heatmap(scaled.data.matrix,
